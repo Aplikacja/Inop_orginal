@@ -11,68 +11,79 @@ C_aplication::C_aplication(std::string what) {
 	m_load_file(what);
 };
 void C_aplication::m_load_file(std::string s_file) {
-	std::ifstream file;
-	file.open(s_file.c_str());
-	if (file.good())
+	try
 	{
-		int value, value_II, i, j,k, i_temp;
-		std::vector<std::vector<std::string>> V_string;
-		std::vector<std::vector<int>> v_klucze;
-		std::vector<std::vector<std::vector<int>>> V_procedur;
-		std::vector<std::vector<int>> V_proces;
-		std::vector<int> v_k;
-		std::vector<int> v_proc;
-		std::vector<bool> V_b;
-		std::vector<int> V_start;
-		std::vector<std::string> V_temp;
-		std::vector<int> V_typ_menu;
-		std::string s_temp;
-		int i_temp_II;
-		int i_typ_menu;
-		int i_temp_procedur;
-		int i_size_procedur;
-		bool b_temp;
-		V_str_.resize(2);
-		V_str_[1].resize(size_menu);
-		file >> value;
-		i_size_ = value;
-		for (i = 0; i < value; i++)
+		std::ifstream file;
+		file.open(s_file.c_str());
+		if (file.good())
 		{
-			file >> i_typ_menu;
-			file >> value_II;
-			file >> b_temp;
-			file >> i_temp_II;
-			V_b.push_back(b_temp);
-			V_typ_menu.push_back(i_typ_menu);
-			V_temp.clear();
-			V_proces.clear();
-			v_k.clear();
-			for (j = 0; j < value_II; j++)
+			int value, value_II, i, j, k, i_temp;
+			std::vector<std::vector<std::string>> V_string;
+			std::vector<std::vector<int>> v_klucze;
+			std::vector<std::vector<std::vector<int>>> V_procedur;
+			std::vector<std::vector<int>> V_proces;
+			std::vector<int> v_k;
+			std::vector<int> v_proc;
+			std::vector<bool> V_b;
+			std::vector<int> V_start;
+			std::vector<std::string> V_temp;
+			std::vector<int> V_typ_menu;
+			std::string s_temp;
+			int i_temp_II;
+			int i_typ_menu;
+			int i_temp_procedur;
+			int i_size_procedur;
+			bool b_temp;
+			V_str_.resize(2);
+			V_str_[1].resize(size_menu);
+			file >> value;
+			i_size_ = value;
+			for (i = 0; i < value; i++)
 			{
-				file >> i_temp;
-				file >> i_size_procedur;
-				v_proc.clear();
-				for (k = 0; k < i_size_procedur; k++) {
-					file >> i_temp_procedur;
-					v_proc.push_back(i_temp_procedur);
+				file >> i_typ_menu;
+				file >> value_II;
+				file >> b_temp;
+				file >> i_temp_II;
+				V_b.push_back(b_temp);
+				V_typ_menu.push_back(i_typ_menu);
+				V_temp.clear();
+				V_proces.clear();
+				v_k.clear();
+				for (j = 0; j < value_II; j++)
+				{
+					file >> i_temp;
+					file >> i_size_procedur;
+					v_proc.clear();
+					for (k = 0; k < i_size_procedur; k++) {
+						file >> i_temp_procedur;
+						v_proc.push_back(i_temp_procedur);
+					}
+					s_temp.clear();
+					getline(file, s_temp);
+					v_k.push_back(i_temp);
+					V_temp.push_back(s_temp);
+					V_proces.push_back(v_proc);
 				}
-				s_temp.clear();
-				getline(file, s_temp);
-				v_k.push_back(i_temp);
-				V_temp.push_back(s_temp);
-				V_proces.push_back(v_proc);
+				V_procedur.push_back(V_proces);
+				v_klucze.push_back(v_k);
+				V_string.push_back(V_temp);
+				V_start.push_back(i_temp_II);
+				V_str_[0] = V_string;
 			}
-			V_procedur.push_back(V_proces);
-			v_klucze.push_back(v_k);
-			V_string.push_back(V_temp);
-			V_start.push_back(i_temp_II);
-			V_str_[0] = V_string;
+			M_.m_loader(V_string, V_b, v_klucze, V_procedur, V_start, V_typ_menu); //ladowanie menu
+			for (j = 0; j < value; j++) {
+				M_.m_set_str(j, V_str_);
+			}
+			file.close();
 		}
-		M_.m_loader(V_string, V_b, v_klucze, V_procedur, V_start, V_typ_menu); //ladowanie menu
-		for (j = 0; j < value; j++) {
-			M_.m_set_str(j, V_str_);
-		}
-		file.close();
+	}
+	catch (std::ios_base::failure& ex)
+	{
+		MessageBox(nullptr, TEXT("B³¹d podczs wczytywania pliku."), TEXT("B³¹d!"), MB_OK);
+	}
+	catch (...)
+	{
+		MessageBox(nullptr, TEXT("Nierozpoznany b³¹d aplikacji."), TEXT("B³¹d!"), MB_OK);
 	}
 }
 void C_aplication::m_view() {
