@@ -14,7 +14,10 @@ void C_aplication::m_load_file(std::string s_file) {
 	try
 	{
 		std::ifstream file;
+		std::ios_base::iostate exceptionMask = file.exceptions() | std::ios::failbit;
+		file.exceptions(exceptionMask);
 		file.open(s_file.c_str());
+
 		if (file.good())
 		{
 			int value, value_II, i, j, k, i_temp;
@@ -79,11 +82,11 @@ void C_aplication::m_load_file(std::string s_file) {
 	}
 	catch (std::ios_base::failure& ex)
 	{
-		MessageBox(nullptr, TEXT("B³¹d podczs wczytywania pliku."), TEXT("B³¹d!"), MB_OK);
+		MessageBox(nullptr, TEXT("Blad podczs wczytywania pliku."), TEXT("Blad!"), MB_OK);
 	}
 	catch (...)
 	{
-		MessageBox(nullptr, TEXT("Nierozpoznany b³¹d aplikacji."), TEXT("B³¹d!"), MB_OK);
+		MessageBox(nullptr, TEXT("Nierozpoznany blad aplikacji."), TEXT("Blad!"), MB_OK);
 	}
 }
 void C_aplication::m_view() {

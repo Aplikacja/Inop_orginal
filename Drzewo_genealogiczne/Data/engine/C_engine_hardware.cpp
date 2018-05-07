@@ -14,6 +14,8 @@ void C_engine_hardware::m_load_files(std::string& s_str)
 	try
 	{
 		std::ifstream file;
+		std::ios_base::iostate exceptionMask = file.exceptions() | std::ios::failbit;
+		file.exceptions(exceptionMask);
 		file.open(s_str.c_str());
 		if (file.good())
 		{
@@ -23,11 +25,11 @@ void C_engine_hardware::m_load_files(std::string& s_str)
 	}
 	catch (const std::ifstream::failure& ex)
 	{ 
-		MessageBox(nullptr, TEXT("B³¹d otwarcia pliku. SprawdŸ poprawnoœæ pliku."), TEXT("B³¹d!"), MB_OK);
+		MessageBox(nullptr, TEXT("Blad otwarcia pliku. SprawdŸ poprawnoœæ pliku."), TEXT("Blad!"), MB_OK);
 	}
 	catch (...)
 	{
-		MessageBox(nullptr, TEXT("Nierozpoznany b³¹d w menu aplikacji."), TEXT("B³¹d!"), MB_OK);
+		MessageBox(nullptr, TEXT("Nierozpoznany blad w menu aplikacji."), TEXT("Blad!"), MB_OK);
 	}
 } //metoda do przebudowy
 
@@ -42,6 +44,8 @@ void C_engine_hardware::m_save_files(std::string s_data) {
 		//d_Database.m_sort(f_sort_date_brith); //test na sortowanie po dacie urodzenia! (Test zakonczony sukcesem!)
 		//d_Database.m_sort(f_sort_date_death); //test na sortowanie po dacie smierci! (Test zakonczony sukcesem!)
 		std::ofstream file;
+		std::ios_base::iostate exceptionMask = file.exceptions() | std::ios::failbit;
+		file.exceptions(exceptionMask);
 		s_data += ".tree";
 		file.open(s_data.c_str());
 		if (file.good()) {
@@ -56,11 +60,11 @@ void C_engine_hardware::m_save_files(std::string s_data) {
 	}
 	catch (const std::ofstream::failure& ex)
 	{
-		MessageBox(nullptr, TEXT("B³¹d podczas zapisu pliku. SprawdŸ poprawnoœæ nazwy."), TEXT("B³¹d!"), MB_OK);
+		MessageBox(nullptr, TEXT("Blad podczas zapisu pliku. SprawdŸ poprawnoœæ nazwy."), TEXT("Blad!"), MB_OK);
 	}
 	catch (...)
 	{
-		MessageBox(nullptr, TEXT("Nierozpoznany b³¹d z silnikiem aplikacji."), TEXT("B³¹d!"), MB_OK);
+		MessageBox(nullptr, TEXT("Nierozpoznany blad z silnikiem aplikacji."), TEXT("Blad!"), MB_OK);
 	}
 }	//metoda do przebudowy
 
@@ -84,6 +88,8 @@ void C_engine_hardware::m_load_tree()
 	{
 		std::string s_data;
 		std::ifstream file;
+		std::ios_base::iostate exceptionMask = file.exceptions() | std::ios::failbit;
+		file.exceptions(exceptionMask);
 		int i_size;
 		int i_iterator;
 		file.open(file_list_tree);
@@ -98,11 +104,11 @@ void C_engine_hardware::m_load_tree()
 	}
 	catch (const std::ifstream::failure& ex)
 	{
-		MessageBox(nullptr, TEXT("B³¹d podczas ³adowania drzewa"), TEXT("B³¹d!"), MB_OK);
+		MessageBox(nullptr, TEXT("Blad podczas ³adowania drzewa"), TEXT("Blad!"), MB_OK);
 	}
 	catch (...)
 	{
-		MessageBox(nullptr, TEXT("Nierozpoznany b³¹d z silnikiem aplikacji."), TEXT("B³¹d!"), MB_OK);
+		MessageBox(nullptr, TEXT("Nierozpoznany blad z silnikiem aplikacji."), TEXT("Blad!"), MB_OK);
 	}
 }
 void C_engine_hardware::m_save_tree() 
@@ -111,6 +117,8 @@ void C_engine_hardware::m_save_tree()
 	{
 		std::string s_data;
 		std::ofstream file;
+		std::ios_base::iostate exceptionMask = file.exceptions() | std::ios::failbit;
+		file.exceptions(exceptionMask);
 		file.open(file_list_tree);
 		if (file.good()) {
 			file << S_tree_.size();
@@ -122,11 +130,11 @@ void C_engine_hardware::m_save_tree()
 	}
 	catch (std::ofstream::failure& ex)
 	{
-		MessageBox(nullptr, TEXT("B³¹d podczas zapisu drzewa"), TEXT("B³¹d!"), MB_OK);
+		MessageBox(nullptr, TEXT("Blad podczas zapisu drzewa"), TEXT("Blad!"), MB_OK);
 	}
 	catch (...)
 	{
-		MessageBox(nullptr, TEXT("Nierozpoznany b³¹d z silnikiem aplikacji."), TEXT("B³¹d!"), MB_OK);
+		MessageBox(nullptr, TEXT("Nierozpoznany blad z silnikiem aplikacji."), TEXT("Blad!"), MB_OK);
 	}
 }
 
@@ -154,6 +162,8 @@ void f_creative_file_tree(std::string s_data)
 	{
 		s_data = s_data + ".tree";
 		std::ofstream file;
+		std::ios_base::iostate exceptionMask = file.exceptions() | std::ios::failbit;
+		file.exceptions(exceptionMask);
 		file.open(s_data.c_str());
 		if (file.good()) {
 			file << "0";
@@ -162,7 +172,7 @@ void f_creative_file_tree(std::string s_data)
 	}
 	catch (...)
 	{
-		MessageBox(nullptr, TEXT("Nierozpoznany b³¹d z silnikiem aplikacji."), TEXT("B³¹d!"), MB_OK);
+		MessageBox(nullptr, TEXT("Nierozpoznany blad z silnikiem aplikacji."), TEXT("Blad!"), MB_OK);
 	}
 }
 void C_engine_hardware::m_get_tree(std::vector<std::string>& V_str) {

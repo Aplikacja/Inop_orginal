@@ -135,7 +135,7 @@ void C_engine_software::m_view(int i_typ, int i_var, std::string Person, std::li
 	}
 	catch (...)
 	{
-		MessageBox(nullptr, TEXT("Nierozpoznany b³¹d z silnikiem aplikacji."), TEXT("B³¹d!"), MB_OK);
+		MessageBox(nullptr, TEXT("Nierozpoznany blad z silnikiem aplikacji."), TEXT("Blad!"), MB_OK);
 	}
 }
 void C_engine_software::m_get_list_person_orginal(std::list<C_person_base*>& list) {
