@@ -3,14 +3,14 @@
 //	data_aktualizacji: |	Autor:		|					Opis:																							//
 //**********************************************************************************************************************************************************//
 #include "C_db.hpp"
-
+void f_clean(std::list<C_person_base*>& list);
 C_db::C_db() { ID_MAIN_ = 0; }
 void C_db::m_size(int& i_var) {
-	i_var = L_person.size();
+	i_var = (int)L_person_.size();
 }
 void C_db::m_get(std::list<C_person_base*>& lista)
 {
-	lista = L_person;
+	lista = L_person_;
 }
 void C_db::m_load(std::ifstream& is) {
 	m_delete_base();
@@ -18,7 +18,7 @@ void C_db::m_load(std::ifstream& is) {
 	int i_iterator_integral;
 	int i_variable;
 	int i_var_relation;
-	int i_var_relationship;
+	//int i_var_relationship;
 	bool b_SEX;
 	std::string s_first;
 	std::string s_secend;
@@ -49,25 +49,49 @@ void C_db::m_load(std::ifstream& is) {
 			is >> relationship;
 			V_rs.push_back(relationship);
 		}
-		L_person.push_back(new C_person_null(id,b_SEX, s_first, s_secend, dat_first, dat_secend,V_r,V_rs));
+		L_person_.push_back(new C_person_null(id,b_SEX, s_first, s_secend, dat_first, dat_secend,V_r,V_rs));
 	}
-	ID_MAIN_ = L_person.size();
+	ID_MAIN_ = L_person_.size();
 }
 C_db::~C_db() {}
 void C_db::m_delete_base() {
-	for (auto& x : L_person) {
+	for (auto& x : L_person_) {
 		delete x;
 	}
-	L_person.clear();
+	L_person_.clear();
 }
 void C_db::m_sort(bool(*F)(C_person_base* _left, C_person_base* _right)) {
-	L_person.sort(F);
+	L_person_.sort(F);
+}
+void C_db::m_add_V_relation(std::vector<C_relation>& V_relation, C_id& id) {
+	std::list<C_person_base*>::iterator it;
+	C_id id_temp;
+	for (it = L_person_.begin(); it != L_person_.end(); it++)
+	{
+		(*it)->m_get_id(id_temp);
+		if (id_temp.m_return_value() == id.m_return_value()) {
+			(*it)->m_add_V_relation(V_relation);
+			return;
+		}
+	}
+}
+void C_db::m_add_V_relationship(std::vector<C_relationship>& V_relation, C_id& id) {
+	std::list<C_person_base*>::iterator it;
+	C_id id_temp;
+	for (it = L_person_.begin(); it != L_person_.end(); it++)
+	{
+		(*it)->m_get_id(id_temp);
+		if (id_temp.m_return_value() == id.m_return_value()) {
+			(*it)->m_add_V_relationship(V_relation);
+			return;
+		}
+	}
 }
 void C_db::m_add_person(bool b_SEX,std::string& s_first, std::string& s_last, C_date& d_brith, C_date& d_deadth) {
-	L_person.push_back(new C_person_null(ID_MAIN_++,b_SEX,s_first, s_last, d_brith, d_deadth));
+	L_person_.push_back(new C_person_null(ID_MAIN_++,b_SEX,s_first, s_last, d_brith, d_deadth));
 }
 void C_db::m_update_person(bool b_SEX,std::string& s_first, std::string& s_last, C_date& d_brith, C_date& d_deadth, long long& i_variable) { //do szcegolnego przetestowania
-	std::list<C_person_base*>::iterator it = L_person.begin();
+	std::list<C_person_base*>::iterator it = L_person_.begin();
 	advance(it, i_variable); //przesuwa iterator listy o wartosc i_variable
 	//std::vector<C_relation> V_r;
 	//std::vector<C_relationship> V_rs;
@@ -83,10 +107,17 @@ void C_db::m_update_person(bool b_SEX,std::string& s_first, std::string& s_last,
 	(*it)->m_add_date(D_death, d_deadth);
 //	(*it)->m_add_V_relationship(V_rs);
 }
-void C_db::m_add_relationship(C_relationship& relation, int& i_variable) { //do szcegolnego przetestowania
-	std::list<C_person_base*>::iterator it = L_person.begin();
-	advance(it, i_variable); //przesuwa iterator listy o wartosc i_variable
-	(*it)->m_add_relationship(relation);
+void C_db::m_add_relationship(C_relationship& relation, C_id& id) { //do szcegolnego przetestowania
+	std::list<C_person_base*>::iterator it;
+	C_id id_temp;
+	for (it = L_person_.begin(); it != L_person_.end(); it++)
+	{
+		(*it)->m_get_id(id_temp);
+		if (id_temp.m_return_value() == id.m_return_value()) {
+			(*it)->m_add_relationship(relation);
+			return;
+		}
+	}
 }
 void C_db::m_delete_person(long long& i_variable) { //do szcegolnego przetestowania
 	C_id id_variable;
@@ -149,16 +180,16 @@ void C_db::m_delete_person(long long& i_variable) { //do szcegolnego przetestowa
 				}
 			}
 		}
-		for (it = L_person.begin(); it != L_person.end(); it++) {
+		for (it = L_person_.begin(); it != L_person_.end(); it++) {
 			person = *it;
 			person->m_get_id(id_temp);
 			if (id.m_return_value() == id_temp.m_return_value()) {
 				delete *it;
-				L_person.erase(it);  //usuniecie persona wskaznikowego
+				L_person_.erase(it);  //usuniecie persona wskaznikowego
 				break;
 			}
 		}
-		for (auto& x : L_person) {
+		for (auto& x : L_person_) {
 			x->m_get_id(ID);
 			if (ID < id) continue;
 			x->m_down_id();
@@ -230,13 +261,21 @@ void C_db::m_delete_person(long long& i_variable) { //do szcegolnego przetestowa
 	}
 	return;
 }
-void C_db::m_add_relation(C_relation& relation, int& i_variable) { //do szcegolnego przetestowania
-	std::list<C_person_base*>::iterator it = L_person.begin();
-	advance(it, i_variable); //przesuwa iterator listy o wartosc i_variable
-	(*it)->m_add_relation(relation);
+void C_db::m_add_relation(C_relation& relation, C_id& id) { //do szcegolnego przetestowania
+	std::list<C_person_base*>::iterator it;
+	C_id id_temp;
+	for (it = L_person_.begin(); it != L_person_.end(); it++)
+	{
+		(*it)->m_get_id(id_temp);
+		if (id_temp.m_return_value() == id.m_return_value()) {
+			(*it)->m_add_relation(relation);
+			return;
+		}
+	}
+	//zabezpieczyc ze nie ma id w bazie danych
 }
 void C_db::m_delete_relation(int& i_variable, int& i_var) { //do szcegolnego przetestowania
-	std::list<C_person_base*>::iterator it = L_person.begin();
+	std::list<C_person_base*>::iterator it = L_person_.begin();
 	advance(it, i_variable); //przesuwa iterator listy o wartosc i_variable
 	std::vector<C_relation> V_r;
 	(*it)->m_get_V_relation(V_r);
@@ -246,7 +285,7 @@ void C_db::m_delete_relation(int& i_variable, int& i_var) { //do szcegolnego prz
 	(*it)->m_add_V_relation(V_r);
 }
 void C_db::m_delete_relationship(int& i_variable, int& i_var) {//do szcegolnego przetestowania
-	std::list<C_person_base*>::iterator it = L_person.begin();
+	std::list<C_person_base*>::iterator it = L_person_.begin();
 	advance(it, i_variable); //przesuwa iterator listy o wartosc i_variable
 	std::vector<C_relationship> V_rs;
 	(*it)->m_get_V_relationship(V_rs);
@@ -255,42 +294,40 @@ void C_db::m_delete_relationship(int& i_variable, int& i_var) {//do szcegolnego 
 	V_rs.erase(IT);
 	(*it)->m_add_V_relationship(V_rs);
 }
-void C_db::m_update_relation(C_relation& relation, int& i_variable, int& i_var) { //do szcegolnego przetestowania
-	std::list<C_person_base*>::iterator it = L_person.begin();
-	advance(it, i_variable); //przesuwa iterator listy o wartosc i_variable
-	std::vector<C_relation> V_r;
-	(*it)->m_get_V_relation(V_r);
-	std::vector<C_relation>::iterator IT = V_r.begin();
-	advance(IT, i_variable); //przesuwa iterator listy o wartosc i_variable
-	(*IT) = relation;
-	//V_r.erase(IT);
-	//V_r.insert(IT, relation);
-	(*it)->m_add_V_relation(V_r);
+void C_db::m_update_relation(C_relation& relation, C_id& variable, int i_var) { //do szcegolnego przetestowania
+	std::list<C_person_base*>::iterator it = L_person_.begin();
+	if ((*it)->m_content_id(p_id).m_return_value() == variable.m_return_value()) {
+		std::vector<C_relation> V_rs;
+		(*it)->m_get_V_relation(V_rs);
+		std::vector<C_relation>::iterator IT = V_rs.begin();
+		advance(IT, i_var); //przesuwa iterator listy o wartosc i_variable
+		(*IT) = relation;
+	}
 }
-void C_db::m_update_relationship(C_relationship& relation, int& i_variable, int& i_var) { //do szcegolnego przetestowania
-	std::list<C_person_base*>::iterator it = L_person.begin();
-	advance(it, i_variable); //przesuwa iterator listy o wartosc i_variable
-	std::vector<C_relationship> V_rs;
-	(*it)->m_get_V_relationship(V_rs);
-	std::vector<C_relationship>::iterator IT = V_rs.begin();
-	advance(IT, i_variable); //przesuwa iterator listy o wartosc i_variable
-	(*IT) = relation;
-	//V_rs.erase(IT);
-	//V_rs.insert(IT, relation);
-	(*it)->m_add_V_relationship(V_rs);
+void C_db::m_update_relationship(C_relationship& relation, C_id& variable, int i_var) { //do szcegolnego przetestowania
+	std::list<C_person_base*>::iterator it = L_person_.begin();
+	if ((*it)->m_content_id(p_id).m_return_value() == variable.m_return_value()) {
+		std::vector<C_relationship> V_rs;
+		(*it)->m_get_V_relationship(V_rs);
+		std::vector<C_relationship>::iterator IT = V_rs.begin();
+		advance(IT, i_var); //przesuwa iterator listy o wartosc i_variable
+		(*IT) = relation;
+		//(*it)->m_add_V_relationship(V_rs);
+	}
 }
 void C_db::m_search(int i_choice, std::string s_szukana, std::list<C_person_base*>& List){
+	//f_clean(List);
 	int i_iterator = 0;
-	int i_size = L_person.size() - 1;
+	int i_size = (int)L_person_.size() - 1;
 	int i_SIZE = i_size;
 	int i_sr =0;
 	int i_var=0;
 	std::string s_pointer;
 	switch(i_choice) {
 		case sort_first_name: {
-			L_person.sort(f_sort_first_name);
-			std::list<C_person_base*>::iterator it = L_person.begin();
-			std::list<C_person_base*>::iterator it_start = L_person.begin();
+			L_person_.sort(f_sort_first_name);
+			std::list<C_person_base*>::iterator it = L_person_.begin();
+			std::list<C_person_base*>::iterator it_start = L_person_.begin();
 			while (i_iterator < i_size)
 			{
 				i_sr = (i_iterator + i_size) / 2;
@@ -311,9 +348,9 @@ void C_db::m_search(int i_choice, std::string s_szukana, std::list<C_person_base
 			}break;
 		}
 		case sort_last_name: {
-			L_person.sort(f_sort_last_name);
-			std::list<C_person_base*>::iterator it = L_person.begin();
-			std::list<C_person_base*>::iterator it_start = L_person.begin();
+			L_person_.sort(f_sort_last_name);
+			std::list<C_person_base*>::iterator it = L_person_.begin();
+			std::list<C_person_base*>::iterator it_start = L_person_.begin();
 				while (i_iterator <= i_size)
 				{
 					it = it_start;
@@ -327,9 +364,9 @@ void C_db::m_search(int i_choice, std::string s_szukana, std::list<C_person_base
 			break;
 		}
 		case sort_date_brith:	{
-			L_person.sort(f_sort_date_brith);
-			std::list<C_person_base*>::iterator it = L_person.begin();
-			std::list<C_person_base*>::iterator it_start = L_person.begin();
+			L_person_.sort(f_sort_date_brith);
+			std::list<C_person_base*>::iterator it = L_person_.begin();
+			std::list<C_person_base*>::iterator it_start = L_person_.begin();
 			while (i_iterator <= i_size)
 			{
 				advance(it, i_iterator);
@@ -341,9 +378,9 @@ void C_db::m_search(int i_choice, std::string s_szukana, std::list<C_person_base
 			}break;
 		}
 		case sort_date_death: {
-			L_person.sort(f_sort_date_death);
-			std::list<C_person_base*>::iterator it = L_person.begin();
-			std::list<C_person_base*>::iterator it_start = L_person.begin();
+			L_person_.sort(f_sort_date_death);
+			std::list<C_person_base*>::iterator it = L_person_.begin();
+			std::list<C_person_base*>::iterator it_start = L_person_.begin();
 			while (i_iterator <= i_size)
 			{
 				advance(it, i_iterator);
@@ -358,8 +395,9 @@ void C_db::m_search(int i_choice, std::string s_szukana, std::list<C_person_base
 	}
 }
 void C_db::m_search(int i_choice, C_id& id_szukana, std::list<C_person_base*>& List) {
+	//f_clean(List);
 	int i_iterator = 0;
-	int i_size = L_person.size();
+	int i_size = (int)L_person_.size();
 	int i_SIZE = i_size;
 	int i_sr=0;
 	int i_var = 0;
@@ -369,14 +407,14 @@ void C_db::m_search(int i_choice, C_id& id_szukana, std::list<C_person_base*>& L
 	std::string s_pointer;
 	switch (i_choice) {
 	case sort_id: { 
-		L_person.sort(f_sort_id);
-		std::list<C_person_base*>::iterator it = L_person.begin();
-		std::list<C_person_base*>::iterator it_start = L_person.begin();
+		L_person_.sort(f_sort_id);
+		std::list<C_person_base*>::iterator it = L_person_.begin();
+		std::list<C_person_base*>::iterator it_start = L_person_.begin();
 		ll_szukana = id_szukana.m_return_value();
-		while (i_iterator < i_size) //do przebudowy!!!!! bedy powoduja ze nie zaglada we wszystkie 
+		while (i_iterator <= i_size) //do przebudowy!!!!! bedy powoduja ze nie zaglada we wszystkie 
 		{
 			i_sr = (i_iterator + i_size) / 2;
-			it = L_person.begin(); //sprawdzenie
+			it = it_start; //sprawdzenie
 			advance(it, i_sr);
 			f_typ(i_choice, ll_pointer, it);
 			if (ll_pointer == ll_szukana) { //zwraca person odpowiednia wartosc
@@ -445,6 +483,7 @@ bool f_comparison(std::string& s_L, std::string& s_R) {
 			b_value = true;
 		}
 	} while (b_value);
+	return false; //usuniecie waringu
 }
 template<class T>
 void f_szukaj(int i_typ,int& i_SIZE,int& i_var,int& i_iterator, int& i_size, std::list<C_person_base*>& List,std::list<C_person_base*>::iterator& it, std::list<C_person_base*>::iterator& it_start, T& s_pointer, T& s_szukana) {
@@ -461,7 +500,7 @@ void f_szukaj(int i_typ,int& i_SIZE,int& i_var,int& i_iterator, int& i_size, std
 						List.push_back(*it);
 					else {
 						i_size = i_iterator;
-						i_var = 1;
+						i_var = 1; //tu sie wykrzacza
 						break;
 					}
 					it = it_start;
@@ -658,7 +697,7 @@ int f_sprawdzanie_gora(int& i_SIZE, int& i_iterator, int& i_size) {
 		return 1;
 	}
 	else {
-		if (i_size <= i_SIZE - 1) {
+		if (i_size < (i_SIZE - 1)) {
 			i_size++;
 			return 2;
 		}

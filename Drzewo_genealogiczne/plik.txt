@@ -1,4 +1,4 @@
-13
+16
 1 4 0 1 
 0 0 Menu glowne:
 4 2 10 17 Wczytaj drzewo
@@ -29,8 +29,9 @@
 0 1 15 Wyswietl drzewo osoby
 0 1 14 Edytuj osobe
 5 1 21 Powrot
-1 5 0 1
+1 6 0 1
 0 0 Menu edycji osoby:
+0 2 29 30 Dodaj relacje
 0 3 28 11 21 Edytuj dane osoby
 0 0 Edytuj relacje
 0 3 13 11 21 Usun osobe
@@ -51,3 +52,9 @@
 3 2 0 1
 0 0 Edycja osoby:
 0 0 powrot
+2 1 0 1
+0 1 30 Wybierz osobe do dodania relacji:
+2 1 0 1
+0 0 Wzbierz relacje:
+2 1 0 1
+0 0 Wzbierz partnera:

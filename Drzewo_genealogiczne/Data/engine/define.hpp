@@ -12,7 +12,7 @@
 #define DEFINITION_HPP
 #include <sstream>
 #include <conio.h>
-#define size_menu				15
+#define size_menu				16
 #define size_list_view			10
 #define Menu_glowne				0
 #define load_files				10
@@ -34,6 +34,8 @@
 #define Edition_tree			26
 #define rename_tree				27
 #define updata_person			28
+#define choice_person			29
+#define add_relation			30
 #define exit					100
 //nazwa pliku do zapisu
 #define file_save "plik2.txt"
@@ -199,4 +201,16 @@
 #define id_menu_MenuEditTree		10
 #define id_menu_MenuRenameTree		11
 #define id_menu_MenuUpdatePerson	12
+#define id_menu_MenuChoicePerson	13
+#define id_menu_MenuAddRelation		14
+#define id_menu_MenuChoicePartner	15
+//wartosci typuw zwracanych
+#define p_first_name				0
+#define p_last_name					1
+#define p_id						2
+#define p_data_brith				3
+#define p_data_death				4
+#define p_gender					5
+#define p_relation					6
+#define p_relationship				7
 #endif // !DEFINITION_HPP

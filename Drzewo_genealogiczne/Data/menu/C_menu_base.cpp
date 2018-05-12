@@ -10,6 +10,7 @@ void f_clear(HANDLE& h, COORD& pos, DWORD& Written);
 void f_obsluga_zadrzen_alfabetycznych(int& i_message);
 void f_obsluga_zadzren_numerycznych(char& c_message);
 void f_obsluga_zdarzen_vk(int& i_message);
+void f_discripsion_keys(int i_choice, std::string& data);
 inline void f(int i_klawisz, int i_value, unsigned int& i_return);
 inline void f_pouse();
 C_menu_base::C_menu_base( std::vector<std::vector<std::string>>& v, bool b_value,  std::vector<std::vector<int>>& v_k, std::vector<std::vector<int>>& V_proc, int& i_iterator, std::vector<std::list<C_person_base*>>& L_person) {
@@ -50,7 +51,7 @@ void C_menu_base::m_add_perosons(std::vector<std::list<C_person_base*>>& L_perso
 	V_L_person_ = L_person;
 }
 void f_sterowanie(int& x, int& i_klucz,int& i_start, std::vector<int>& v_k) {
-	int i_size = v_k.size();
+	int i_size = (int)v_k.size();
 	int i_message;
 	while (true)
 	{
@@ -77,7 +78,7 @@ void f_sterowanie(int& x, int& i_klucz,int& i_start, std::vector<int>& v_k) {
 	}
 }
 void f_sterowanie(int& x, std::string& s_klucz, int& i_start, std::vector<std::string>& v_k) {
-	int i_size = v_k.size();
+	int i_size = (int)v_k.size();
 	int i_message;
 	while (true)
 	{
@@ -605,5 +606,77 @@ void C_menu_base::m_set_replay(int i_choice, int i_replay) {
 }
 void C_menu_base::m_get_replay(int i_choice, int& i_replay) {
 	i_replay = V_replay_[i_choice];
+}
+void f_discripsion_keys(int i_choice, std::string& data) {
+	switch (i_choice)
+	{
+	case 0:
+	case 2:
+	case 3:
+	case 4:
+	case 7:
+	case 11:
+	case 13:
+	case 14:
+	case 15:
+	case 16:
+	case 17:
+	{
+		data = "strzalka w dol pozwala na przejscie do kolejnej opcji menu";
+		data += "strzalka w gore pozwala na przejscie do poprzedniej opcji menu";
+		data	+= "enter-aktywuje opcje";
+			break;
+	}
+	case 1:
+	{
+		data = "strzalka w dol pozwala na przejscie do kolejnego drzewa";
+		data += "strzalka w gore pozwala na przejscie do wczesniejszego drzewa";
+		data += "enter-aktywuje opcje";
+			break;
+	}
+	case 8:
+	case 21:
+	{
+		data = "strzalka w dol pozwala na przejscie do kolejnej osoby";
+		data += "strzalka w gore pozwala na przejscie do wczesniejszej osoby";
+		data += "enter-aktywuje opcje";
+			break;
+	}
+
+	case 19:
+	case 20:
+	{
+		data = "strzalka w dol pozwala na przejscie do kolejnego realcji";
+		data += "strzalka w gore pozwala na przejscie do wczesniejszego realcji";
+		data += "enter-aktywuje opcje";
+			break;
+	}
+	case 5:
+	case 6:
+	case 10:
+	case 12:
+	case 18:
+	{
+		data = "strzalka w dol pozwala na przejscie do kolejnego ";
+		data += "strzalka w gore pozwala na przejscie do wczesniejszego ";
+		data += "dozwolone znaki A-Z";
+		data += "dozwolone znaki a-z";
+		data += "enter-aktywuje opcje";
+		data += "Spacja dodatkowe opcje";
+			break;
+	}
+	case 9:
+	{
+		data = "strzalka w dol pozwala na przejscie do kolejnego ";
+		data += "strzalka w gore pozwala na przejscie do wczesniejszego";
+		data += "strzalka w prawo pozwala na przejscie do kolejnego poziomu ";
+		data += "strzalka w lewo pozwala na przejscie do wczesniejszego poziomu";
+		data += "enter-wyswietl drzewo dla persona";
+		data += "Spacja dodatkowe opcje";
+
+			break;
+	}
+
+	}
 }
 

@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Drzewo_genealogiczne", "Drzewo_genealogiczne\Drzewo_genealogiczne.vcxproj", "{7CE2809C-549B-42F3-9455-80C75FD795D3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Prototyp_Menu", "Prototyp_Menu\Prototyp_Menu.vcxproj", "{E13EAB72-E6E3-419D-B1A5-6E68FA8E2709}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -23,14 +21,6 @@ Global
 		{7CE2809C-549B-42F3-9455-80C75FD795D3}.Release|x64.Build.0 = Release|x64
 		{7CE2809C-549B-42F3-9455-80C75FD795D3}.Release|x86.ActiveCfg = Release|Win32
 		{7CE2809C-549B-42F3-9455-80C75FD795D3}.Release|x86.Build.0 = Release|Win32
-		{E13EAB72-E6E3-419D-B1A5-6E68FA8E2709}.Debug|x64.ActiveCfg = Debug|x64
-		{E13EAB72-E6E3-419D-B1A5-6E68FA8E2709}.Debug|x64.Build.0 = Debug|x64
-		{E13EAB72-E6E3-419D-B1A5-6E68FA8E2709}.Debug|x86.ActiveCfg = Debug|Win32
-		{E13EAB72-E6E3-419D-B1A5-6E68FA8E2709}.Debug|x86.Build.0 = Debug|Win32
-		{E13EAB72-E6E3-419D-B1A5-6E68FA8E2709}.Release|x64.ActiveCfg = Release|x64
-		{E13EAB72-E6E3-419D-B1A5-6E68FA8E2709}.Release|x64.Build.0 = Release|x64
-		{E13EAB72-E6E3-419D-B1A5-6E68FA8E2709}.Release|x86.ActiveCfg = Release|Win32
-		{E13EAB72-E6E3-419D-B1A5-6E68FA8E2709}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

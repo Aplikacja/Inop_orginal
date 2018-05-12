@@ -9,7 +9,7 @@ C_menu::C_menu() {
 };
 void C_menu::m_loader(std::vector<std::vector<std::string>>& v_s, std::vector<bool>& v_b, std::vector<std::vector<int>>& v_k, std::vector<std::vector<std::vector<int>>>& V_procedur, std::vector<int>& V_iterator, std::vector<int>& V_typ_menu) {
 	Tab_menu_ = new C_menu_base*[v_s.size()];
-	i_size = v_s.size(); // przepisanie rozmiaru vectora
+	i_size = (int)v_s.size(); // przepisanie rozmiaru vectora
 	std::vector<bool>::iterator it = v_b.begin(); //stworzenie iteratora od vectora boola
 	std::vector<std::vector<int>>::iterator it_i = v_k.begin(); //stworzenie iteratora do vectorów typu int
 	std::vector<std::vector<std::vector<int>>>::iterator it_proc = V_procedur.begin();
@@ -68,6 +68,23 @@ void C_menu::m_set_content(int i_choice,std::list<C_person_base*>& Lista, std::v
 	}
 	for (i_iter = 0; i_iter < i_size; i_iter++) {
 		Tab_menu_[i_iter]->m_set_str(i_choice,V_content);
+	}
+	V_str_.clear();
+}
+void C_menu::m_set_content(int i_choice, std::vector<C_person_base*>& V_person, std::vector<C_id>& V_id) {
+	std::string s_data;
+	C_id id;
+	std::vector<std::string> V_content;
+	int i_iter;
+	for (auto& X : V_person) {
+		s_data.clear();
+		X->m_conwert(s_data);
+		X->m_get_id(id);
+		V_id.push_back(id);
+		V_content.push_back(s_data);
+	}
+	for (i_iter = 0; i_iter < i_size; i_iter++) {
+		Tab_menu_[i_iter]->m_set_str(i_choice, V_content);
 	}
 	V_str_.clear();
 }

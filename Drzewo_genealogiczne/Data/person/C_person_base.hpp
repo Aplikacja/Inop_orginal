@@ -18,7 +18,7 @@ protected:
 	C_date brith_; //zmienna C_date przechowuje informacje o dacie urodzenia
 	C_date death_; //zmienna C_date przechowuje informacje o dacie smierci
 	std::vector<C_relationship> V_relationship_; //ten typ:P przechowuje rodzaj relacji typu(C_relationship "zwiazki") [partnera, date slubu i dzieci ze zwiazku]
-	std::vector<C_relation> V_realtion_; //ten typ:P przechowuje rodzaj relacji typu(C_relation "zwiazki") [typ relacji i id persona na drugim koncu relacji]
+	std::vector<C_relation> V_relation_; //ten typ:P przechowuje rodzaj relacji typu(C_relation "zwiazki") [typ relacji i id persona na drugim koncu relacji]
 	std::string m_get_content(); //prywatna metoda zwaracajaca string z imieniem i nazwiskiem perosna
 public:
 	C_person_base();	//konstruktor
@@ -43,6 +43,12 @@ public:
 	void m_add_V_relation(std::vector<C_relation>& V_r); //metoda pozwalajaca na dodawanie vektora typu C_relation do obiektu klasy Perosn (...)
 	void m_add_V_relationship(std::vector<C_relationship>& V_rs); //metoda pozwalajaca na dodawanie vektora typu C_relationship do obiektu klasy Perosn (...)
 	void m_conwert(std::string& s_str); //metoda pozwalajaca wycagnac dane z perosna za pomoca typu string. Metoda ta wykorzystywana jest w wyborze Perosna w interface
+	C_date& m_content_date(int i_choice);
+	C_id& m_content_id(int i_choice);
+	std::string& m_content_name(int i_choice);
+	bool& m_content_gender(int i_choice);
+	std::vector<C_relationship>& m_content_V_relationship(int i_choice);
+	std::vector<C_relation>& m_content_V_relation(int i_choice);
 	void m_down_id();
 	virtual std::string m_view()=0; //metoda wirtualna sprawiajaca ze klasa C_perosn jest klasa abstrakcyjna
 	friend void operator<<(std::ofstream &is, C_person_base &C); //przeciazenie operatora przesuniecia botowego na output pozawalajaca na zapis danych Perosna do pliku 

@@ -29,11 +29,11 @@ void C_date::m_apped(std::string& s_date) {
 	ll_value_ = 0;
 	int i_iterator;
 	int i_cykl = 0;
-	for (i_iterator = s_date.size() - 1; i_iterator >= 0; i_iterator--) {
+	for (i_iterator = (int)s_date.size() - 1; i_iterator >= 0; i_iterator--) {
 		if (s_date[i_iterator] == '-') {
 			continue;
 		}
-		ll_value_ += ((int)(s_date[i_iterator]) - (int)'0')*pow(10,i_cykl);
+		ll_value_ += ((int)(s_date[i_iterator]) - (int)'0')*(int)pow(10,i_cykl);
 		i_cykl++;
 	}
 }

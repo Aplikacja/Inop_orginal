@@ -11,16 +11,18 @@ C_person_base::C_person_base() {}
 C_person_base::C_person_base(C_id ID, bool b_SEX, std::string s_First, std::string s_Secend,
 	C_date Date_brith, C_date Date_death, std::vector<C_relation> V_r, std::vector<C_relationship> V_rs) {
 	id_ = ID;
+	id_.m_active();
 	first_name_ = s_First;
 	last_name_ = s_Secend;
 	b_sex_ = b_SEX;
 	brith_ = Date_brith;
 	death_ = Date_death;
-	V_realtion_ = V_r;
+	V_relation_ = V_r;
 	V_relationship_ = V_rs;
 }
 C_person_base::C_person_base(C_id ID,bool b_SEX,std::string& s_FIRSTNAME, std::string& s_LASTNAME, C_date& date_brith, C_date& date_death) {
 	id_ = ID;
+	id_.m_active();
 	b_sex_ = b_SEX;
 	first_name_ = s_FIRSTNAME;
 	last_name_ = s_LASTNAME;
@@ -44,13 +46,15 @@ void operator<<(std::ofstream &is, C_person_base &C) {
 	is << C.brith_;
 	is << "\n";
 	is << C.death_;
-	is <<' ' <<C.V_realtion_.size();
-	for (auto& X : C.V_realtion_) {
+	is << '\n' << C.V_relation_.size()<<'\n';
+	for (auto& X : C.V_relation_) {
 		is << X;
+		is << "\n";
 	}
-	is <<' ' << C.V_relationship_.size();
+	is << C.V_relationship_.size()<<'\n';
 	for (auto& X : C.V_relationship_) {
 		is << X;
+		is << "\n";
 	}
 }
 void C_person_base::m_add_id(C_id& ID) {
@@ -90,19 +94,19 @@ std::string C_person_base::m_get_content() {
 	return ' ' + first_name_ + ' ' + last_name_ + '\n';
 }
 void C_person_base::m_add_relation(C_relation& relation) {
-	V_realtion_.push_back(relation);
+	V_relation_.push_back(relation);
 }
 void C_person_base::m_add_relationship(C_relationship& relation) {
 	V_relationship_.push_back(relation);
 }
 void C_person_base::m_get_V_relation(std::vector<C_relation>& V_r) {
-	V_r = V_realtion_;
+	V_r = V_relation_;
 }
 void C_person_base::m_get_V_relationship(std::vector<C_relationship>& V_rs) {
 	V_rs = V_relationship_;
 }
 void C_person_base::m_add_V_relation(std::vector<C_relation>& V_r) {
-	V_realtion_ = V_r;
+	V_relation_ = V_r;
 }
 void C_person_base::m_add_V_relationship(std::vector<C_relationship>& V_rs) {
 	V_relationship_ = V_rs;
@@ -149,8 +153,66 @@ void C_person_base::m_conwert(std::string& s_str) {
 				data_death;
 	brith_.m_sidle(data_brith);
 	death_.m_sidle(data_death);
-	s_str += " , " + first_name_ + " , " + last_name_ + " , " + data_brith + " , " + data_death + ";";
+	s_str +=  '\t'+first_name_ + " , " + last_name_ + " , " + data_brith + " , " + data_death + ";";
 }
 void C_person_base::m_down_id() {
 	id_.m_down();
+}
+C_date& C_person_base::m_content_date(int i_choice) {
+	switch (i_choice) {
+	case p_data_brith:
+		return brith_;
+	case p_data_death:
+		return death_;
+	default:
+		C_date date;
+		return date;
+	}
+}
+C_id& C_person_base::m_content_id(int i_choice) {
+	switch (i_choice) {
+	case p_id:
+		return id_;
+	default:
+		C_id id;
+		return id;
+	}
+}
+std::string& C_person_base::m_content_name(int i_choice) {
+	switch (i_choice) {
+	case p_first_name:
+		return first_name_;
+	case p_last_name:
+		return last_name_;
+	default:
+		std::string str="";
+		return str;
+	}
+}
+bool& C_person_base::m_content_gender(int i_choice) {
+	switch (i_choice) {
+	case p_first_name:
+		return b_sex_;
+	default:
+		bool b=NULL;
+		return b;
+	}
+}
+std::vector<C_relationship>& C_person_base::m_content_V_relationship(int i_choice) {
+	switch (i_choice) {
+	case p_relationship:
+		return V_relationship_;
+	default:
+		std::vector<C_relationship> V_relationship;
+		return V_relationship;
+	}
+} //5871071
+std::vector<C_relation>& C_person_base::m_content_V_relation(int i_choice) {
+	switch (i_choice) {
+	case p_relation:
+		return V_relation_;
+	default:
+		std::vector<C_relation> V_relation;
+		return V_relation;
+	}
 }

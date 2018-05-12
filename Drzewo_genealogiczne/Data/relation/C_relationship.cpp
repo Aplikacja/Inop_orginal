@@ -9,13 +9,16 @@ C_relationship::C_relationship(C_id& ID, C_date& Date) {
 	id_ = ID; date_ = Date;
 }
 void operator<<(std::ofstream &is, C_relationship &C) {
-	is << C.b_value_;
-	is << C.i_typ_;
+	is << C.b_value_<<' ';
+	is << C.i_typ_<<' ';
 	is << C.id_;
-	is << C.V_.size();
+	is << ' ';
+	is << C.V_.size()<<' ';
 	for (auto& x : C.V_) {
+		is << '\n';
 		is << x;
 	}
+	is << ' ';
 }
 void operator>>(std::ifstream& is, C_relationship &C) {
 	long long ll_temp;
@@ -23,8 +26,7 @@ void operator>>(std::ifstream& is, C_relationship &C) {
 	C_relation relation;
 	is >> C.b_value_;
 	is >> C.i_typ_;
-	is >> ll_temp;
-	C.id_.m_giving(ll_temp);
+	is >> C.id_;
 	is >> ll_temp; //ilosc elementow relacje (dzieci)
 	for (i_iterator = 0; i_iterator < ll_temp; i_iterator++) {
 		is >> relation;
@@ -35,8 +37,8 @@ void C_relationship::m_wiew() {}
 C_relationship::~C_relationship() {}
 void C_relationship::m_active() { b_value_ = true; }
 void C_relationship::m_deactive() { b_value_ = false; }
-void C_relationship::m_add_typ(int& i_variable) { i_typ_ = i_variable; }
-void C_relationship::m_get_typ(int& i_variable) { i_variable = i_typ_; }
+void C_relationship::m_add_typ(int i_variable) { i_typ_ = i_variable; }
+void C_relationship::m_get_typ(int i_variable) { i_variable = i_typ_; }
 void C_relationship::m_add_id(C_id& ID) { id_ = ID; }
 void C_relationship::m_get_id(C_id& ID) { ID = id_; }
 C_relation C_relationship::m_return(int i_value) {
@@ -47,7 +49,7 @@ C_relation C_relationship::m_return(int i_value) {
 		return relation;
 	}
 }
-void C_relationship::m_set_baby(C_relation relation) {
+void C_relationship::m_set_baby(C_relation& relation) {
 	V_.push_back(relation);
 }
 void C_relationship::m_get_baby(std::vector<C_relation>& relation) {
